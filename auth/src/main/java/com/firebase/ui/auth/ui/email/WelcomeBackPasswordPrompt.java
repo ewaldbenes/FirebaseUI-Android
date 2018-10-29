@@ -71,6 +71,12 @@ public class WelcomeBackPasswordPrompt extends AppCompatBase
                 .putExtra(ExtraConstants.IDP_RESPONSE, response);
     }
 
+    @NonNull
+    private static String extractUsernameFromEmail(String email) {
+        int iOfAtSign = email.indexOf("@");
+        return email.substring(0, iOfAtSign);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +96,7 @@ public class WelcomeBackPasswordPrompt extends AppCompatBase
         ImeHelper.setImeOnDoneListener(mPasswordField, this);
 
         // Create welcome back text with email bolded.
+        email = extractUsernameFromEmail(email); // remove @domain from email
         String bodyText =
                 getString(R.string.fui_welcome_back_password_prompt_body, email);
 

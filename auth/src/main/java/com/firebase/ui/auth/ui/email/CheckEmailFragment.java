@@ -25,6 +25,7 @@ import com.firebase.ui.auth.ui.FragmentBase;
 import com.firebase.ui.auth.util.ExtraConstants;
 import com.firebase.ui.auth.util.data.PrivacyDisclosureUtils;
 import com.firebase.ui.auth.util.ui.ImeHelper;
+import com.firebase.ui.auth.util.ui.fieldvalidators.BaseValidator;
 import com.firebase.ui.auth.util.ui.fieldvalidators.EmailFieldValidator;
 import com.firebase.ui.auth.viewmodel.ResourceObserver;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -71,7 +72,7 @@ public class CheckEmailFragment extends FragmentBase implements
     private EditText mEmailEditText;
     private TextInputLayout mEmailLayout;
 
-    private EmailFieldValidator mEmailFieldValidator;
+    private BaseValidator mEmailFieldValidator;
     private CheckEmailListener mListener;
 
     public static CheckEmailFragment newInstance(@Nullable String email) {
@@ -97,7 +98,7 @@ public class CheckEmailFragment extends FragmentBase implements
         // Email field and validator
         mEmailLayout = view.findViewById(R.id.email_layout);
         mEmailEditText = view.findViewById(R.id.email);
-        mEmailFieldValidator = new EmailFieldValidator(mEmailLayout);
+        mEmailFieldValidator = new BaseValidator(mEmailLayout);
         mEmailLayout.setOnClickListener(this);
         mEmailEditText.setOnClickListener(this);
 
@@ -144,7 +145,6 @@ public class CheckEmailFragment extends FragmentBase implements
                 String email = user.getEmail();
                 String provider = user.getProviderId();
 
-                mEmailEditText.setText(email);
                 //noinspection ConstantConditions new user
                 if (provider == null) {
                     mListener.onNewUser(new User.Builder(EmailAuthProvider.PROVIDER_ID, email)
@@ -200,7 +200,7 @@ public class CheckEmailFragment extends FragmentBase implements
     private void validateAndProceed() {
         String email = mEmailEditText.getText().toString();
         if (mEmailFieldValidator.validate(email)) {
-            mHandler.fetchProvider(email);
+            mHandler.fetchProvider(email + "@team-challenge.at");
         }
     }
 
